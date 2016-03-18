@@ -23,7 +23,7 @@ getInverse  <- function() Inv
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(x, ...) {
+cacheSolve <- function(x=makeCacheMatrix, ...) {
  calculatedInverse <- x$getInverse() 
    
    ##check if there's a cached value AND it's a matrix
