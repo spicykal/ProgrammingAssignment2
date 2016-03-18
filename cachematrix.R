@@ -4,12 +4,51 @@
 ## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        Inv <- NULL ##
+        ##
+        set <- function(userValue = matrix()) {
+        x <<- userValue 
+        Inv <<- NULL
 }
-
+        get <- function() x
+        
+ ##set inverse variable in parent env to desired value and return the value as a convenience
+   setInverse <- function(invVal) {
+    cachedInv <<- invVal 
+     return(Inv)
+   }
+getInverse  <- function() Inv
+   list(set=set, get=get, setInverse=setInverse, getInverse=getInverse)
+ }
 
 ## Write a short comment describing this function
 
 cacheSolve <- function(x, ...) {
+ calculatedInverse <- x$getInverse() 
+   
+   ##check if there's a cached value AND it's a matrix
+   if(!is.null(calculatedInverse) && is.matrix(calculatedInverse)) { 
+     message("We found cached data and saved valuable cpus!!!")
+     return(calculatedInverse)
+   }
+   
+   ## otherwise get the matrix
+   matrixToSolve <- x$get()  
+   
+   ## try to solve the matrix and catch errors and warnings
+   calculatedInverse <- tryCatch({ 
+     solve(matrixToSolve)
+   }, warning=function(w) {
+     message("This may not be the result you're looking for")
+     message(w)
+   }, error=function(e) {
+     message("Something went wrong solving your matrix")
+     message(e)
+     message("\n")
+   })
+   
+   ## whatever the case, set the value of the inverse (NULL if something went wrong)
+   message("Setting the value of inverse to:") 
+   x$setInverse(calculatedInverse)
         ## Return a matrix that is the inverse of 'x'
 }
